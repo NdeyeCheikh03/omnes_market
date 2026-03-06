@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Omnes MarketPlace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    body { background: var(--clr-bg); }
+
+    /* ── Split layout ── */
+    .login-wrap {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Panneau gauche décoratif */
+    .login-panel {
+      background: linear-gradient(145deg, var(--clr-primary) 0%, #0f1d35 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2.5rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-panel::before {
+      content: '';
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.15);
+      top: -120px; right: -120px;
+    }
+    .login-panel::after {
+      content: '';
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.10);
+      bottom: -80px; left: -80px;
+    }
+    .panel-logo {
+      display: flex; align-items: center; gap: .8rem;
+      font-family: var(--font-display); font-size: 1.7rem;
+      margin-bottom: 2.5rem; position: relative; z-index: 1;
+    }
+    .panel-logo-icon {
+      width: 48px; height: 48px;
+      background: var(--clr-accent);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: #fff;
+      box-shadow: 0 4px 18px rgba(201,168,76,.4);
+    }
+    .panel-logo span:first-of-type { color: #fff; }
+    .panel-logo span:last-of-type  { color: var(--clr-accent); }
+    .panel-tagline {
+      font-family: var(--font-display);
+      font-size: 2rem; font-weight: 700;
+      line-height: 1.25; text-align: center;
+      margin-bottom: 1.2rem; position: relative; z-index: 1;
+    }
+    .panel-tagline em { color: var(--clr-accent); font-style: normal; }
+    .panel-desc {
+      text-align: center; font-size: .9rem;
+      opacity: .7; line-height: 1.7;
+      max-width: 340px; position: relative; z-index: 1;
+    }
+    .panel-features {
+      margin-top: 2.5rem; display: flex; flex-direction: column; gap: .9rem;
+      position: relative; z-index: 1; width: 100%; max-width: 320px;
+    }
+    .panel-feature {
+      display: flex; align-items: center; gap: .9rem;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 10px; padding: .75rem 1rem;
+      font-size: .85rem;
+    }
+    .panel-feature i {
+      color: var(--clr-accent); font-size: 1rem; width: 20px; text-align: center;
+    }
+
+    /* Panneau droit : formulaire */
+    .login-form-side {
+      display: flex; align-items: center; justify-content: center;
+      padding: 3rem 2rem;
+      background: #fff;
+    }
+    .login-box {
+      width: 100%; max-width: 420px;
+    }
+    .login-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem; font-weight: 700;
+      color: var(--clr-dark); margin-bottom: .3rem;
+    }
+    .login-sub {
+      font-size: .875rem; color: var(--clr-mid); margin-bottom: 1.75rem;
+    }
+
+    /* Onglets rôle */
+    .role-tabs {
+      display: flex; gap: .4rem;
+      background: var(--clr-light);
+      border-radius: 10px; padding: .3rem;
+      margin-bottom: 1.5rem;
+    }
+    .role-tab {
+      flex: 1; padding: .55rem .4rem;
+      border-radius: 8px;
+      font-size: .82rem; font-weight: 600;
+      color: var(--clr-mid); cursor: pointer;
+      transition: all var(--transition);
+      border: none; background: transparent;
+      display: flex; align-items: center; justify-content: center; gap: .35rem;
+    }
+    .role-tab.active {
+      background: var(--clr-primary); color: #fff;
+      box-shadow: 0 2px 8px rgba(27,42,74,.25);
+    }
+    .role-tab[data-role="admin"].active {
+      background: #0f1d35;
+    }
+
+    /* Formulaire */
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: .83rem; font-weight: 500; color: var(--clr-dark); margin-bottom: .4rem; }
+    .form-group label span { color: var(--clr-danger); }
+    .input-wrap { position: relative; }
+    .input-wrap i.ico { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--clr-mid); font-size: .8rem; pointer-events: none; }
+    .input-wrap input { width: 100%; padding: .65rem 1rem .65rem 2.4rem; border: 1.5px solid var(--clr-border); border-radius: 8px; font-size: .9rem; color: var(--clr-dark); background: #fff; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .input-wrap input:focus { border-color: var(--clr-primary); box-shadow: 0 0 0 3px var(--clr-primary-lt); }
+    .input-eye { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); color: var(--clr-mid); font-size: .8rem; background: none; border: none; cursor: pointer; padding: 0; }
+    .form-error { display: none; font-size: .75rem; color: var(--clr-danger); margin-top: .25rem; align-items: center; gap: .25rem; }
+    .form-row-2 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .checkbox-label { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--clr-mid); cursor: pointer; }
+    .checkbox-label input { width: 15px; height: 15px; accent-color: var(--clr-primary); }
+    .auth-link { color: var(--clr-accent); font-weight: 600; font-size: .82rem; }
+    .auth-link:hover { text-decoration: underline; }
+
+    /* Bouton */
+    .btn-login {
+      width: 100%; padding: .8rem; border-radius: 8px;
+      background: var(--clr-primary); color: #fff;
+      font-size: .95rem; font-weight: 600;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      transition: all var(--transition);
+      box-shadow: 0 4px 14px rgba(27,42,74,.25);
+    }
+    .btn-login:hover { background: var(--clr-primary-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,42,74,.35); }
+    .btn-login:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+    /* Admin spécifique */
+    .admin-badge {
+      display: none;
+      background: #fff8e6; border: 1px solid #e8c84a;
+      border-radius: 8px; padding: .8rem 1rem;
+      font-size: .8rem; color: #7a5c00; margin-bottom: 1.25rem;
+      align-items: center; gap: .6rem;
+    }
+    .admin-badge i { color: var(--clr-accent); font-size: .9rem; }
+
+    .divider { text-align: center; color: var(--clr-mid); font-size: .82rem; margin: 1.2rem 0; position: relative; }
+    .divider::before,.divider::after { content: ''; position: absolute; top: 50%; width: 43%; height: 1px; background: var(--clr-border); }
+    .divider::before { left: 0; } .divider::after { right: 0; }
+    .register-link { text-align: center; font-size: .83rem; color: var(--clr-mid); }
+
+    /* Alert */
+    .alert { display: flex; align-items: flex-start; gap: .6rem; padding: .75rem 1rem; border-radius: 8px; font-size: .83rem; margin-bottom: 1rem; border: 1.5px solid transparent; }
+    .alert-error { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+
+    @media (max-width: 768px) {
+      .login-wrap { grid-template-columns: 1fr; }
+      .login-panel { display: none; }
+      .login-form-side { padding: 2rem 1.25rem; background: var(--clr-bg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrap">
+
+  <!-- ── Panneau gauche ── -->
+  <div class="login-panel">
+    <div class="panel-logo">
+      <div class="panel-logo-icon"><i class="fas fa-store"></i></div>
+      <span>Omnes</span><span>Market</span>
+    </div>
+
+    <h1 class="panel-tagline">
+      Achetez, vendez,<br>
+      <em>enchérissez.</em>
+    </h1>
+    <p class="panel-desc">
+      La marketplace de la communauté Omnes Education.<br>
+      Vente immédiate, négociation et enchères en temps réel.
+    </p>
+
+    <div class="panel-features">
+      <div class="panel-feature">
+        <i class="fas fa-bolt"></i>
+        <span>Achat immédiat en 1 clic</span>
+      </div>
+      <div class="panel-feature">
+        <i class="fas fa-comments-dollar"></i>
+        <span>Négociation vendeur–acheteur (5 tours)</span>
+      </div>
+      <div class="panel-feature">
+        <i class="fas fa-gavel"></i>
+        <span>Enchères automatiques — meilleure offre</span>
+      </div>
+      <div class="panel-feature">
+        <i class="fas fa-shield-alt"></i>
+        <span>Paiement sécurisé et validé</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Panneau droit : formulaire ── -->
+  <div class="login-form-side">
+    <div class="login-box">
+
+      <h1 class="login-title">Bienvenue !</h1>
+      <p class="login-sub">Connectez-vous à votre espace Omnes MarketPlace</p>
+
+      <!-- Onglets rôle -->
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab active" data-role="acheteur" role="tab">
+          <i class="fas fa-user"></i> Acheteur
+        </button>
+        <button class="role-tab" data-role="vendeur" role="tab">
+          <i class="fas fa-store"></i> Vendeur
+        </button>
+        <button class="role-tab" data-role="admin" role="tab">
+          <i class="fas fa-shield-alt"></i> Admin
+        </button>
+      </div>
+
+      <!-- Badge info admin -->
+      <div class="admin-badge" id="adminBadge">
+        <i class="fas fa-lock"></i>
+        <span>Espace réservé aux administrateurs Omnes MarketPlace.</span>
+      </div>
+
+
+      <!-- Alerte erreur -->
+      <div id="loginAlert" style="display:none;" class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="loginAlertMsg">Identifiants incorrects.</span>
+      </div>
+
+      <!-- Formulaire -->
+      <form id="loginForm" novalidate>
+        <input type="hidden" id="roleInput" value="acheteur">
+
+        <div class="form-group">
+          <label for="email">Adresse email <span>*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope ico"></i>
+            <input type="email" id="email" name="email" placeholder="votre@email.com" required autocomplete="email">
+          </div>
+          <span class="form-error" id="emailErr"><i class="fas fa-times-circle"></i> Adresse email invalide.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe <span>*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ico"></i>
+            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="input-eye" id="togglePass" tabindex="-1">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <span class="form-error" id="passErr"><i class="fas fa-times-circle"></i> Mot de passe requis.</span>
+        </div>
+
+        <div class="form-row-2">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember"> Se souvenir de moi
+          </label>
+          <a href="#" class="auth-link">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn-login" id="submitBtn">
+          <i class="fas fa-sign-in-alt"></i> Se connecter
+        </button>
+      </form>
+
+      <div class="divider">ou</div>
+
+      <p class="register-link">
+        Pas encore de compte ?
+        <a href="register.html" class="auth-link">Créer un compte</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+// Gestion onglets + demo box sur la page login
+document.addEventListener('DOMContentLoaded', () => {
+
+  const tabs       = document.querySelectorAll('.role-tab');
+  const roleInput  = document.getElementById('roleInput');
+  const adminBadge = document.getElementById('adminBadge');
+  const submitBtn  = document.getElementById('submitBtn');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const role = tab.dataset.role;
+      roleInput.value = role;
+
+      // Badge admin
+      adminBadge.style.display = role === 'admin' ? 'flex' : 'none';
+
+      // Couleur bouton admin
+      submitBtn.style.background = role === 'admin' ? '#0f1d35' : '';
+    });
+  });
+
+  // Pré-sélection via URL ?role=admin etc.
+  const params = new URLSearchParams(window.location.search);
+  const r = params.get('role');
+  if (r) {
+    const t = document.querySelector(`.role-tab[data-role="${r}"]`);
+    if (t) t.click();
+  }
+});
+</script>
+</body>
+</html>

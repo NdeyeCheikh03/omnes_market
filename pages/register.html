@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription — Omnes MarketPlace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    body { background: var(--clr-bg); }
+
+    .register-wrap {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Panneau gauche */
+    .reg-panel {
+      background: linear-gradient(145deg, var(--clr-primary) 0%, #0f1d35 100%);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 3rem 2.5rem;
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .reg-panel::before {
+      content:''; position:absolute;
+      width:380px; height:380px; border-radius:50%;
+      border:1px solid rgba(201,168,76,.15);
+      top:-100px; right:-100px;
+    }
+    .reg-panel::after {
+      content:''; position:absolute;
+      width:250px; height:250px; border-radius:50%;
+      border:1px solid rgba(201,168,76,.10);
+      bottom:-70px; left:-70px;
+    }
+    .panel-logo {
+      display:flex; align-items:center; gap:.8rem;
+      font-family:var(--font-display); font-size:1.7rem;
+      margin-bottom:2rem; position:relative; z-index:1;
+    }
+    .panel-logo-icon {
+      width:48px; height:48px; background:var(--clr-accent);
+      border-radius:12px; display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; color:#fff; box-shadow:0 4px 18px rgba(201,168,76,.4);
+    }
+    .panel-logo span:last-of-type { color:var(--clr-accent); }
+    .panel-tagline {
+      font-family:var(--font-display); font-size:1.9rem; font-weight:700;
+      line-height:1.25; text-align:center; margin-bottom:1rem;
+      position:relative; z-index:1;
+    }
+    .panel-tagline em { color:var(--clr-accent); font-style:normal; }
+    .panel-desc { text-align:center; font-size:.88rem; opacity:.7; line-height:1.7; max-width:320px; position:relative; z-index:1; }
+
+    /* Cards rôle sur panel */
+    .role-cards { display:flex; flex-direction:column; gap:.8rem; margin-top:2rem; width:100%; max-width:300px; position:relative; z-index:1; }
+    .role-card {
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      border-radius:10px; padding:.9rem 1rem;
+      display:flex; align-items:center; gap:.9rem; font-size:.85rem;
+    }
+    .role-card i { color:var(--clr-accent); font-size:1.1rem; width:22px; text-align:center; }
+    .role-card strong { display:block; color:#fff; font-size:.88rem; margin-bottom:.1rem; }
+    .role-card span { opacity:.65; font-size:.78rem; }
+
+    /* Formulaire côté droit */
+    .reg-form-side {
+      display:flex; align-items:flex-start; justify-content:center;
+      padding:2.5rem 2rem; background:#fff; overflow-y:auto;
+    }
+    .reg-box { width:100%; max-width:460px; padding-top:.5rem; }
+    .reg-title { font-family:var(--font-display); font-size:1.65rem; font-weight:700; color:var(--clr-dark); margin-bottom:.3rem; }
+    .reg-sub { font-size:.85rem; color:var(--clr-mid); margin-bottom:1.5rem; }
+
+    /* Onglets rôle */
+    .role-tabs {
+      display:flex; gap:.4rem; background:var(--clr-light);
+      border-radius:10px; padding:.3rem; margin-bottom:1.5rem;
+    }
+    .role-tab {
+      flex:1; padding:.6rem .4rem; border-radius:8px;
+      font-size:.82rem; font-weight:600; color:var(--clr-mid);
+      cursor:pointer; transition:all var(--transition);
+      border:none; background:transparent;
+      display:flex; align-items:center; justify-content:center; gap:.35rem;
+    }
+    .role-tab.active { background:var(--clr-primary); color:#fff; box-shadow:0 2px 8px rgba(27,42,74,.25); }
+
+    /* Formulaire */
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.83rem; font-weight:500; color:var(--clr-dark); margin-bottom:.35rem; }
+    .form-group label span.req { color:var(--clr-danger); }
+    .input-wrap { position:relative; }
+    .input-wrap i.ico { position:absolute; left:.85rem; top:50%; transform:translateY(-50%); color:var(--clr-mid); font-size:.8rem; pointer-events:none; }
+    .input-wrap input,.input-wrap select {
+      width:100%; padding:.62rem 1rem .62rem 2.4rem;
+      border:1.5px solid var(--clr-border); border-radius:8px;
+      font-size:.88rem; color:var(--clr-dark); background:#fff;
+      outline:none; transition:border-color .2s,box-shadow .2s; font-family:inherit;
+    }
+    .input-wrap input:focus,.input-wrap select:focus { border-color:var(--clr-primary); box-shadow:0 0 0 3px var(--clr-primary-lt); }
+    .input-eye { position:absolute; right:.75rem; top:50%; transform:translateY(-50%); color:var(--clr-mid); font-size:.8rem; background:none; border:none; cursor:pointer; padding:0; }
+    .form-error { display:none; font-size:.75rem; color:var(--clr-danger); margin-top:.2rem; align-items:center; gap:.25rem; }
+    .form-hint { font-size:.75rem; color:var(--clr-mid); margin-top:.2rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+
+    /* Barre force mdp */
+    .pass-bar { height:4px; background:var(--clr-border); border-radius:2px; margin:.5rem 0 .2rem; overflow:hidden; }
+    .pass-bar-fill { height:100%; border-radius:2px; transition:width .3s,background .3s; width:0%; }
+    .pass-hint { font-size:.73rem; color:var(--clr-mid); }
+
+    /* Checkbox */
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin:.5rem 0 1.1rem; }
+    .check-row input { width:15px; height:15px; accent-color:var(--clr-primary); margin-top:2px; flex-shrink:0; }
+    .check-row label { font-size:.8rem; color:var(--clr-mid); line-height:1.5; cursor:pointer; }
+    .check-row label a { color:var(--clr-accent); font-weight:600; }
+
+    /* Bouton submit */
+    .btn-submit {
+      width:100%; padding:.8rem; border-radius:8px;
+      background:var(--clr-primary); color:#fff;
+      font-size:.92rem; font-weight:600;
+      border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:.5rem;
+      transition:all var(--transition);
+      box-shadow:0 4px 14px rgba(27,42,74,.25);
+      margin-top:.5rem;
+    }
+    .btn-submit:hover { background:var(--clr-primary-dk); transform:translateY(-1px); box-shadow:0 6px 20px rgba(27,42,74,.35); }
+    .btn-submit:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+
+    /* Alert */
+    .alert { display:flex; align-items:flex-start; gap:.6rem; padding:.75rem 1rem; border-radius:8px; font-size:.83rem; margin-bottom:1rem; border:1.5px solid transparent; }
+    .alert-error { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+
+    .divider { text-align:center; color:var(--clr-mid); font-size:.82rem; margin:.9rem 0; position:relative; }
+    .divider::before,.divider::after { content:''; position:absolute; top:50%; width:43%; height:1px; background:var(--clr-border); }
+    .divider::before { left:0; } .divider::after { right:0; }
+    .login-link { text-align:center; font-size:.83rem; color:var(--clr-mid); margin-top:.5rem; }
+    .auth-link { color:var(--clr-accent); font-weight:600; }
+    .auth-link:hover { text-decoration:underline; }
+
+    @media(max-width:768px){
+      .register-wrap { grid-template-columns:1fr; }
+      .reg-panel { display:none; }
+      .reg-form-side { padding:2rem 1.25rem; background:var(--clr-bg); }
+    }
+    @media(max-width:480px){ .form-row { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="register-wrap">
+
+  <!-- Panneau gauche -->
+  <div class="reg-panel">
+    <div class="panel-logo">
+      <div class="panel-logo-icon"><i class="fas fa-store"></i></div>
+      <span>Omnes</span><span>Market</span>
+    </div>
+    <h2 class="panel-tagline">Rejoignez la<br><em>communauté</em></h2>
+    <p class="panel-desc">Créez votre compte gratuitement et commencez à acheter ou vendre dès aujourd'hui.</p>
+
+    <div class="role-cards">
+      <div class="role-card">
+        <i class="fas fa-user"></i>
+        <div>
+          <strong>Compte Acheteur</strong>
+          <span>Parcourez, enchérissez, négociez et achetez</span>
+        </div>
+      </div>
+      <div class="role-card">
+        <i class="fas fa-store"></i>
+        <div>
+          <strong>Compte Vendeur</strong>
+          <span>Publiez vos articles et gérez vos ventes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire -->
+  <div class="reg-form-side">
+    <div class="reg-box">
+
+      <h1 class="reg-title">Créer un compte</h1>
+      <p class="reg-sub">Inscription gratuite et rapide</p>
+
+      <!-- Onglets rôle -->
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab active" data-role="acheteur" role="tab">
+          <i class="fas fa-user"></i> Acheteur
+        </button>
+        <button class="role-tab" data-role="vendeur" role="tab">
+          <i class="fas fa-store"></i> Vendeur
+        </button>
+      </div>
+      <input type="hidden" id="roleInput" value="acheteur">
+
+      <!-- Alerte -->
+      <div id="registerAlert" style="display:none;" class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i><span id="registerAlertMsg"></span>
+      </div>
+
+      <form id="registerForm" novalidate>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prenom">Prénom <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-user ico"></i>
+              <input type="text" id="prenom" placeholder="Sophie" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-user ico"></i>
+              <input type="text" id="nom" placeholder="Lemaire" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emailReg">Email <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope ico"></i>
+            <input type="email" id="emailReg" placeholder="sophie@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <!-- Pseudo boutique — vendeur uniquement -->
+        <div class="form-group" id="pseudoGroup" style="display:none;">
+          <label for="pseudo">Nom de boutique <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-tag ico"></i>
+            <input type="text" id="pseudo" placeholder="MaBoutique">
+          </div>
+          <p class="form-hint">Visible sur toutes vos annonces.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="tel">Téléphone</label>
+          <div class="input-wrap">
+            <i class="fas fa-phone ico"></i>
+            <input type="tel" id="tel" placeholder="+33 6 12 34 56 78" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <div class="input-wrap">
+            <i class="fas fa-map-marker-alt ico"></i>
+            <input type="text" id="adresse" placeholder="123 rue de la Paix, 75001 Paris">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="passwordReg">Mot de passe <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-lock ico"></i>
+              <input type="password" id="passwordReg" placeholder="Min. 8 caractères" required autocomplete="new-password">
+              <button type="button" class="input-eye" id="togglePass"><i class="fas fa-eye" id="eyeIcon"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirm">Confirmer <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-lock ico"></i>
+              <input type="password" id="confirm" placeholder="Retapez le mot de passe" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barre force -->
+        <div class="pass-bar"><div class="pass-bar-fill" id="passStrengthBar"></div></div>
+        <p class="pass-hint" id="passStrengthLabel">Entrez un mot de passe</p>
+
+        <div class="check-row" style="margin-top:.8rem;">
+          <input type="checkbox" id="cgu" required>
+          <label for="cgu">J'accepte les <a href="#" class="auth-link">CGU</a> et la <a href="#" class="auth-link">Politique de confidentialité</a> d'Omnes MarketPlace.</label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtnReg">
+          <i class="fas fa-user-plus"></i>
+          <span id="submitBtnText">Créer mon compte acheteur</span>
+        </button>
+
+      </form>
+
+      <div class="divider">ou</div>
+      <p class="login-link">Déjà un compte ? <a href="login.html" class="auth-link">Se connecter</a></p>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs        = document.querySelectorAll('.role-tab');
+  const roleInput   = document.getElementById('roleInput');
+  const pseudoGroup = document.getElementById('pseudoGroup');
+  const submitText  = document.getElementById('submitBtnText');
+  const submitBtn   = document.getElementById('submitBtnReg');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const role = tab.dataset.role;
+      roleInput.value = role;
+      const isVendeur = role === 'vendeur';
+      pseudoGroup.style.display = isVendeur ? 'block' : 'none';
+      submitText.textContent = isVendeur ? 'Créer mon compte vendeur' : 'Créer mon compte acheteur';
+    });
+  });
+
+  // Pré-sélection via URL
+  const r = new URLSearchParams(window.location.search).get('role');
+  if (r) {
+    const t = document.querySelector(`.role-tab[data-role="${r}"]`);
+    if (t) t.click();
+  }
+});
+</script>
+</body>
+</html>
