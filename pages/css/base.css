@@ -1,0 +1,185 @@
+/* ================================================================
+   OMNES MARKETPLACE — base.css
+   Reset, Typographie, Utilitaires
+   ================================================================ */
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+img, video, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font: inherit; }
+input, textarea, select { font: inherit; }
+ul, ol { list-style: none; }
+
+/* ── Typographie ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  line-height: var(--lh-tight);
+  color: var(--clr-dark);
+}
+h1 { font-size: var(--text-4xl); font-weight: 700; }
+h2 { font-size: var(--text-3xl); font-weight: 700; }
+h3 { font-size: var(--text-2xl); font-weight: 600; }
+h4 { font-size: var(--text-xl);  font-weight: 600; }
+h5 { font-size: var(--text-lg);  font-weight: 600; }
+h6 { font-size: var(--text-md);  font-weight: 600; }
+
+p { margin-bottom: var(--sp-4); }
+p:last-child { margin-bottom: 0; }
+
+/* ── Conteneur ── */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
+}
+
+/* ── Grilles ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-6); }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--sp-6); }
+
+/* ── Flexbox helpers ── */
+.flex     { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-gap-2 { display: flex; align-items: center; gap: var(--sp-2); }
+.flex-gap-4 { display: flex; align-items: center; gap: var(--sp-4); }
+.flex-wrap  { flex-wrap: wrap; }
+
+/* ── Spacers ── */
+.mt-4  { margin-top: var(--sp-4);  }
+.mt-8  { margin-top: var(--sp-8);  }
+.mt-12 { margin-top: var(--sp-12); }
+.mb-4  { margin-bottom: var(--sp-4);  }
+.mb-8  { margin-bottom: var(--sp-8);  }
+.pt-16 { padding-top: var(--sp-16); }
+.pb-16 { padding-bottom: var(--sp-16); }
+
+/* ── Texte ── */
+.text-xs    { font-size: var(--text-xs); }
+.text-sm    { font-size: var(--text-sm); }
+.text-lg    { font-size: var(--text-lg); }
+.text-xl    { font-size: var(--text-xl); }
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+.text-primary { color: var(--clr-primary); }
+.text-accent  { color: var(--clr-accent); }
+.text-teal    { color: var(--clr-teal); }
+.text-gold    { color: var(--clr-gold-dk); }
+.text-muted   { color: var(--clr-text-mid); }
+.text-white   { color: var(--clr-white); }
+.font-bold    { font-weight: 700; }
+.font-medium  { font-weight: 500; }
+.font-head    { font-family: var(--font-head); }
+
+/* ── Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-teal {
+  background: linear-gradient(135deg, var(--clr-teal), var(--clr-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Section ── */
+.section { padding: var(--sp-20) 0; }
+.section-sm { padding: var(--sp-12) 0; }
+.section-title {
+  font-size: var(--text-3xl);
+  font-family: var(--font-head);
+  color: var(--clr-dark);
+  margin-bottom: var(--sp-4);
+}
+.section-subtitle {
+  font-size: var(--text-md);
+  color: var(--clr-text-mid);
+  max-width: 560px;
+  margin-inline: auto;
+  margin-bottom: var(--sp-12);
+}
+.section-header { text-align: center; margin-bottom: var(--sp-12); }
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--clr-border);
+  border: none;
+  margin: var(--sp-8) 0;
+}
+
+/* ── Visibility ── */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+.hidden  { display: none !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--clr-bg-alt); }
+::-webkit-scrollbar-thumb { background: var(--clr-primary-a20); border-radius: var(--r-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--clr-primary); }
+
+/* ── Focus ── */
+:focus-visible {
+  outline: 2px solid var(--clr-primary);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ── Animations ── */
+@keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+@keyframes fadeInUp  { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) } }
+@keyframes fadeInDown{ from { opacity:0; transform:translateY(-12px) } to { opacity:1; transform:translateY(0) } }
+@keyframes scaleIn   { from { opacity:0; transform:scale(.95) } to { opacity:1; transform:scale(1) } }
+@keyframes slideInRight { from { transform:translateX(100%) } to { transform:translateX(0) } }
+@keyframes pulse     { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+@keyframes shimmer   { 0%{background-position:200% center} 100%{background-position:-200% center} }
+@keyframes spin      { to { transform:rotate(360deg) } }
+@keyframes countUp   { from { transform:translateY(8px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+
+.animate-fadeIn  { animation: fadeIn var(--dur-slow) var(--ease) both; }
+.animate-fadeUp  { animation: fadeInUp var(--dur-slow) var(--ease) both; }
+.animate-scaleIn { animation: scaleIn var(--dur-base) var(--ease-spring) both; }
+
+/* Stagger children */
+.stagger > * { animation: fadeInUp .5s var(--ease) both; }
+.stagger > *:nth-child(1) { animation-delay: .05s; }
+.stagger > *:nth-child(2) { animation-delay: .10s; }
+.stagger > *:nth-child(3) { animation-delay: .15s; }
+.stagger > *:nth-child(4) { animation-delay: .20s; }
+.stagger > *:nth-child(5) { animation-delay: .25s; }
+.stagger > *:nth-child(6) { animation-delay: .30s; }
+.stagger > *:nth-child(7) { animation-delay: .35s; }
+.stagger > *:nth-child(8) { animation-delay: .40s; }
+
+/* ── Responsive helpers ── */
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: var(--text-3xl); }
+  h2 { font-size: var(--text-2xl); }
+}
+@media (max-width: 768px) {
+  .container { padding-inline: var(--sp-4); }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .grid-auto { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .section { padding: var(--sp-12) 0; }
+  h1 { font-size: var(--text-2xl); }
+}
