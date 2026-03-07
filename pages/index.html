@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omnes MarketPlace — Achetez, Enchérissez, Négociez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<!-- Flash Banner -->
+<div class="flash-banner">
+  ✦ Nouvelles enchères chaque semaine &nbsp;·&nbsp;
+  Vendez vos objets à la communauté Omnes &nbsp;·&nbsp;
+  <a href="register.html">Inscription gratuite →</a>
+</div>
+
+<!-- ── HEADER ── -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-store"></i></div>
+      <span style="color:var(--navy)">Omnes</span><span style="color:var(--gold)">Market</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html"  class="nav-link active">Accueil</a>
+      <a href="browse.html" class="nav-link">Parcourir</a>
+      <a href="browse.html?type=enchere" class="nav-link">Enchères</a>
+      <a href="browse.html?type=nego"    class="nav-link">Négociations</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="search" placeholder="Rechercher…" id="headerSearch" autocomplete="off">
+      </div>
+      <button class="icon-btn" id="notifBtn" title="Notifications" onclick="window.location='notifications.html'">
+        <i class="fas fa-bell"></i>
+        <span class="badge-count" id="notifBadge" style="display:none">0</span>
+      </button>
+      <button class="icon-btn" onclick="window.location='panier.html'" title="Panier">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="badge-count" id="cartBadge" style="display:none">0</span>
+      </button>
+      <div class="user-menu" id="userMenu" style="display:none">
+        <button class="user-avatar" id="userAvatarBtn">JS</button>
+        <div class="dropdown-menu" id="userDropdown">
+          <div style="padding:.5rem .75rem .25rem;font-size:var(--fs-xs);color:var(--grey-400)">Mon compte</div>
+          <a href="compte.html"        class="dropdown-item"><i class="fas fa-user"></i> Mon profil</a>
+          <a href="compte.html#commandes" class="dropdown-item"><i class="fas fa-box"></i> Mes commandes</a>
+          <a href="notifications.html" class="dropdown-item"><i class="fas fa-bell"></i> Notifications</a>
+          <hr>
+          <button class="dropdown-item danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn btn-primary btn-sm" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Connexion</a>
+      <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html"  class="nav-link">Accueil</a>
+    <a href="browse.html" class="nav-link">Parcourir</a>
+    <a href="browse.html?type=enchere" class="nav-link">Enchères</a>
+    <a href="browse.html?type=nego"    class="nav-link">Négociations</a>
+    <hr style="border-color:var(--grey-200)">
+    <a href="login.html"    class="nav-link">Connexion</a>
+    <a href="register.html" class="nav-link">S'inscrire</a>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="hero-badge">
+      <i class="fas fa-crown" style="color:var(--gold)"></i>
+      La marketplace officielle Omnes Education
+    </div>
+    <h1>Achetez, Enchérissez,<br><em>Négociez</em> en confiance</h1>
+    <p>Des articles premium vendus par des membres vérifiés de la communauté ECE, INSEEC et Omnes.</p>
+    <div class="hero-actions">
+      <a href="browse.html" class="btn btn-accent btn-lg">
+        <i class="fas fa-search"></i> Parcourir les articles
+      </a>
+      <a href="register.html" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.28)">
+        <i class="fas fa-store"></i> Devenir vendeur
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num" id="statArticles">—</span><span class="lbl">Articles disponibles</span></div>
+      <div class="hero-stat"><span class="num" id="statVendeurs">—</span><span class="lbl">Vendeurs actifs</span></div>
+      <div class="hero-stat"><span class="num" id="statEncheres">—</span><span class="lbl">Enchères en cours</span></div>
+      <div class="hero-stat"><span class="num" id="statVentes">—</span><span class="lbl">Ventes réalisées</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3 MODES ── -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:var(--sp-10)">
+      <p style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold-dk);margin-bottom:.5rem">Comment ça marche</p>
+      <h2 class="section-title">3 façons d'acheter</h2>
+      <p class="section-sub" style="margin-bottom:0">Choisissez le mode selon l'article et vos préférences.</p>
+    </div>
+    <div class="modes-grid">
+      <div class="mode-card immediat">
+        <div class="mode-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Achat Immédiat</h3>
+        <p>Prix fixe, ajout au panier et paiement en quelques clics. Simple, rapide, sans attente.</p>
+        <a href="browse.html?type=immediat" class="btn btn-outline btn-block">Voir les articles <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="mode-card enchere">
+        <div class="mode-icon"><i class="fas fa-gavel"></i></div>
+        <h3>Enchères</h3>
+        <p>Proposez votre meilleure offre avant la clôture. Le système OMP enchérit automatiquement pour vous.</p>
+        <a href="browse.html?type=enchere" class="btn btn-outline btn-block">Voir les enchères <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="mode-card nego">
+        <div class="mode-icon"><i class="fas fa-comments-dollar"></i></div>
+        <h3>Négociation</h3>
+        <p>Faites une contre-offre au vendeur. Jusqu'à 5 tours d'échange pour trouver le bon prix.</p>
+        <a href="browse.html?type=nego" class="btn btn-outline btn-block">Voir les articles <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARTICLES RÉCENTS ── -->
+<section class="section" style="background:var(--grey-50)">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Sélection du moment</h2>
+        <p style="color:var(--grey-600);font-size:var(--fs-sm);margin:0">Les dernières pépites de la communauté</p>
+      </div>
+      <a href="browse.html" class="btn btn-outline btn-sm">Voir tout <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="recentArticles">
+      <!-- Skeleton -->
+      <div class="card" style="pointer-events:none">
+        <div class="card-image" style="background:linear-gradient(90deg,var(--grey-100) 25%,var(--grey-200) 50%,var(--grey-100) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite"></div>
+        <div class="card-body">
+          <div style="height:10px;background:var(--grey-100);border-radius:4px;margin-bottom:.5rem;width:35%"></div>
+          <div style="height:15px;background:var(--grey-100);border-radius:4px;margin-bottom:.35rem"></div>
+          <div style="height:15px;background:var(--grey-100);border-radius:4px;width:65%"></div>
+        </div>
+      </div>
+    </div>
+    <style>@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}</style>
+  </div>
+</section>
+
+<!-- ── ENCHÈRES LIVE ── -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">
+          Enchères en direct
+          <span style="display:inline-block;width:9px;height:9px;background:var(--gold);border-radius:50%;animation:pulse 1.2s infinite;margin-left:.4rem;vertical-align:middle"></span>
+        </h2>
+        <p style="color:var(--grey-600);font-size:var(--fs-sm);margin:0">Dernière chance — elles se terminent bientôt</p>
+      </div>
+      <a href="browse.html?type=enchere" class="btn btn-outline-accent btn-sm">Toutes les enchères <i class="fas fa-gavel"></i></a>
+    </div>
+    <div class="products-grid" id="liveEncheres">
+      <p class="empty-state" style="padding:var(--sp-8);grid-column:1/-1" id="encheresLoading">
+        <i class="fas fa-gavel" style="opacity:.3;font-size:2rem;display:block;margin:0 auto var(--sp-3)"></i>
+        Chargement des enchères…
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA VENDEUR ── -->
+<section class="section" style="background:var(--grey-50)">
+  <div class="container">
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 60%,var(--navy-3) 100%);border-radius:var(--r-xl);padding:var(--sp-16);text-align:center;color:#fff;position:relative;overflow:hidden">
+      <div style="position:absolute;width:320px;height:320px;border-radius:50%;border:60px solid rgba(201,168,76,.06);top:-120px;right:-80px"></div>
+      <div style="position:absolute;width:180px;height:180px;border-radius:50%;border:30px solid rgba(201,168,76,.05);bottom:-60px;left:60px"></div>
+      <div style="position:relative;z-index:1">
+        <span style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);padding:.38rem 1.2rem;border-radius:var(--r-full);font-size:var(--fs-xs);color:var(--gold-lt);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-5)">
+          <i class="fas fa-crown"></i> Devenez vendeur
+        </span>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:var(--sp-4)">Vous avez des objets à vendre&nbsp;?</h2>
+        <p style="font-size:var(--fs-lg);opacity:.7;max-width:520px;margin:0 auto var(--sp-8);line-height:1.75">Rejoignez la communauté Omnes et proposez vos articles à des milliers d'acheteurs vérifiés.</p>
+        <a href="register.html" class="btn btn-accent btn-lg"><i class="fas fa-plus-circle"></i> Commencer à vendre</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:var(--sp-4);display:flex">
+          <div class="logo-icon"><i class="fas fa-store"></i></div>
+          <span style="margin-left:.6rem;font-family:var(--font-display);font-size:1.3rem;color:#fff">Omnes<span style="color:var(--gold)">Market</span></span>
+        </a>
+        <p>La marketplace de confiance de la communauté Omnes Education.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Acheter</h4>
+        <div class="footer-links">
+          <a href="browse.html">Tous les articles</a>
+          <a href="browse.html?type=enchere">Enchères</a>
+          <a href="browse.html?type=nego">Négociations</a>
+          <a href="browse.html?type=immediat">Achat immédiat</a>
+        </div>
+      </div>
+      <div>
+        <h4>Vendre</h4>
+        <div class="footer-links">
+          <a href="register.html">Devenir vendeur</a>
+          <a href="vendor-dashboard.html">Espace vendeur</a>
+        </div>
+      </div>
+      <div>
+        <h4>Aide</h4>
+        <div class="footer-links">
+          <a href="#">FAQ</a>
+          <a href="#">CGU</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Omnes MarketPlace — ECE Paris / Omnes Education</span>
+      <div class="payment-icons">
+        <span class="payment-icon">VISA</span>
+        <span class="payment-icon">MC</span>
+        <span class="payment-icon">CB</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+<style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+<script src="../assets/js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
