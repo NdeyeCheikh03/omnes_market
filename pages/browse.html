@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcourir les articles — Omnes MarketPlace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-store"></i></div>
+      <span style="color:var(--navy)">Omnes</span><span style="color:var(--gold)">Market</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html"  class="nav-link">Accueil</a>
+      <a href="browse.html" class="nav-link active">Parcourir</a>
+      <a href="browse.html?type=enchere" class="nav-link">Enchères</a>
+      <a href="browse.html?type=nego"    class="nav-link">Négociations</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="window.location='notifications.html'" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-count" id="notifBadge" style="display:none">0</span>
+      </button>
+      <button class="icon-btn" onclick="window.location='panier.html'" title="Panier">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="badge-count" id="cartBadge" style="display:none">0</span>
+      </button>
+      <div class="user-menu" id="userMenu" style="display:none">
+        <button class="user-avatar" id="userAvatarBtn">JS</button>
+        <div class="dropdown-menu" id="userDropdown">
+          <a href="compte.html"        class="dropdown-item"><i class="fas fa-user"></i> Mon profil</a>
+          <a href="notifications.html" class="dropdown-item"><i class="fas fa-bell"></i> Notifications</a>
+          <hr>
+          <button class="dropdown-item danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn btn-primary btn-sm" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Connexion</a>
+      <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html"  class="nav-link">Accueil</a>
+    <a href="browse.html" class="nav-link active">Parcourir</a>
+    <a href="login.html"  class="nav-link">Connexion</a>
+  </nav>
+</header>
+
+<!-- ── BROWSE HERO (fond navy, recherche intégrée, catégories) ── -->
+<div class="browse-hero">
+  <div class="container">
+    <div class="browse-hero-top">
+      <div>
+        <h1>Tous les articles</h1>
+        <p>Découvrez les trésors de la communauté Omnes Education</p>
+      </div>
+      <div class="browse-searchbar">
+        <i class="fas fa-search"></i>
+        <input type="search" id="searchInput" placeholder="Rechercher un article, une catégorie…" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre catégories horizontale -->
+  <div class="category-bar">
+    <div class="container">
+      <button class="cat-btn active" data-cat=""><i class="fas fa-th-large"></i> Tous</button>
+      <button class="cat-btn" data-cat="electronique"><i class="fas fa-laptop"></i> Électronique</button>
+      <button class="cat-btn" data-cat="mode"><i class="fas fa-tshirt"></i> Mode</button>
+      <button class="cat-btn" data-cat="livres"><i class="fas fa-book"></i> Livres & Cours</button>
+      <button class="cat-btn" data-cat="sport"><i class="fas fa-running"></i> Sport</button>
+      <button class="cat-btn" data-cat="maison"><i class="fas fa-home"></i> Maison</button>
+      <button class="cat-btn" data-cat="art"><i class="fas fa-paint-brush"></i> Art & Déco</button>
+      <button class="cat-btn" data-cat="autre"><i class="fas fa-box"></i> Autre</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BARRE DE FILTRES RAPIDES (boutons) ── -->
+<div class="active-filters-bar">
+  <div class="container">
+    <span class="active-filters-label"><i class="fas fa-sliders-h" style="margin-right:.35rem"></i>Filtres</span>
+
+    <!-- Type de vente (boutons) -->
+    <div class="sale-type-filters" id="typeFilters">
+      <button class="filter-btn active" data-type=""><i class="fas fa-border-all"></i> Tous les types</button>
+      <button class="filter-btn" data-type="immediat"><i class="fas fa-bolt"></i> Achat immédiat</button>
+      <button class="filter-btn gold" data-type="enchere"><i class="fas fa-gavel"></i> Enchères</button>
+      <button class="filter-btn teal" data-type="nego"><i class="fas fa-comments-dollar"></i> Négociation</button>
+    </div>
+
+    <!-- Séparateur -->
+    <div style="width:1px;height:22px;background:var(--grey-200);flex-shrink:0"></div>
+
+    <!-- Tri -->
+    <div style="display:flex;align-items:center;gap:.4rem;margin-left:auto">
+      <span style="font-size:var(--fs-xs);color:var(--grey-400);white-space:nowrap">Trier par</span>
+      <select id="sortSelect" style="padding:.38rem .8rem;border:1.5px solid var(--grey-200);border-radius:var(--r-full);font-size:var(--fs-xs);font-weight:600;color:var(--navy);background:#fff;outline:none;cursor:pointer;font-family:var(--font-body)">
+        <option value="recent">Plus récents</option>
+        <option value="prix_asc">Prix croissant</option>
+        <option value="prix_desc">Prix décroissant</option>
+        <option value="fin_enchere">Fin imminente</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTENU PRINCIPAL ── -->
+<main class="section-sm">
+  <div class="container">
+    <div class="browse-layout">
+
+      <!-- SIDEBAR FILTRES (gauche, détaillée) -->
+      <aside class="filters-sidebar" id="filtersSidebar">
+
+        <div class="filter-title">
+          <span><i class="fas fa-sliders-h" style="color:var(--gold-dk);margin-right:.4rem"></i>Filtres</span>
+          <button class="btn btn-ghost btn-xs" id="resetFilters">Réinitialiser</button>
+        </div>
+
+        <!-- Type de vente -->
+        <div class="filter-section">
+          <h4>Type de vente</h4>
+          <div class="filter-options">
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="immediat" id="fImmédiat">
+              <span><i class="fas fa-bolt" style="color:var(--gold-dk);width:14px"></i> Achat immédiat</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="enchere" id="fEnchere">
+              <span><i class="fas fa-gavel" style="color:var(--navy);width:14px"></i> Enchères</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="nego" id="fNego">
+              <span><i class="fas fa-comments-dollar" style="color:var(--teal);width:14px"></i> Négociation</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Catégorie produit -->
+        <div class="filter-section">
+          <h4>Catégorie produit</h4>
+          <div class="filter-options">
+            <label class="radio-label"><input type="radio" name="categorie" value="" checked> Toutes</label>
+            <label class="radio-label"><input type="radio" name="categorie" value="rare"> <span class="badge badge-rare" style="font-size:.62rem">Rares</span></label>
+            <label class="radio-label"><input type="radio" name="categorie" value="haut_de_gamme"> <span class="badge badge-luxe" style="font-size:.62rem">Haut de gamme</span></label>
+            <label class="radio-label"><input type="radio" name="categorie" value="regular"> <span class="badge badge-mid" style="font-size:.62rem">Réguliers</span></label>
+          </div>
+        </div>
+
+        <!-- Prix -->
+        <div class="filter-section">
+          <h4>Prix (€)</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+            <input type="number" class="filter-search-input" placeholder="Min" id="fPrixMin" min="0">
+            <input type="number" class="filter-search-input" placeholder="Max" id="fPrixMax" min="0">
+          </div>
+        </div>
+
+        <!-- Vendeur -->
+        <div class="filter-section">
+          <h4>Vendeur</h4>
+          <input type="text" class="filter-search-input" placeholder="Nom du vendeur…" id="fVendeur">
+        </div>
+
+        <button class="btn btn-primary btn-block btn-sm" id="applyFilters">
+          <i class="fas fa-check"></i> Appliquer
+        </button>
+      </aside>
+
+      <!-- GRILLE ARTICLES -->
+      <div>
+        <!-- Résultats info -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-5)">
+          <p style="font-size:var(--fs-sm);color:var(--grey-600)">
+            <span id="resultCount" style="font-weight:700;color:var(--navy)">—</span> articles trouvés
+          </p>
+          <!-- Toggle vue grille/liste (cosmétique) -->
+          <div style="display:flex;gap:.3rem">
+            <button class="icon-btn" id="viewGrid" title="Vue grille" style="background:var(--navy);color:#fff">
+              <i class="fas fa-th"></i>
+            </button>
+            <button class="icon-btn" id="viewList" title="Vue liste">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="products-grid" id="articlesGrid">
+          <!-- Articles injectés par browse.js -->
+          <p class="empty-state" style="padding:var(--sp-12);grid-column:1/-1;color:var(--grey-400)">
+            <i class="fas fa-search" style="font-size:2.5rem;display:block;margin:0 auto var(--sp-4);opacity:.25"></i>
+            Chargement des articles…
+          </p>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" style="display:flex;justify-content:center;gap:.4rem;margin-top:var(--sp-8)"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:var(--sp-4);display:flex">
+          <div class="logo-icon"><i class="fas fa-store"></i></div>
+          <span style="margin-left:.6rem;font-family:var(--font-display);font-size:1.3rem;color:#fff">Omnes<span style="color:var(--gold)">Market</span></span>
+        </a>
+        <p>La marketplace de la communauté Omnes Education.</p>
+      </div>
+      <div>
+        <h4>Acheter</h4>
+        <div class="footer-links">
+          <a href="browse.html">Tous les articles</a>
+          <a href="browse.html?type=enchere">Enchères</a>
+          <a href="browse.html?type=nego">Négociations</a>
+        </div>
+      </div>
+      <div>
+        <h4>Mon compte</h4>
+        <div class="footer-links">
+          <a href="login.html">Connexion</a>
+          <a href="register.html">Inscription</a>
+        </div>
+      </div>
+      <div>
+        <h4>Aide</h4>
+        <div class="footer-links">
+          <a href="#">FAQ</a><a href="#">CGU</a><a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Omnes MarketPlace — ECE Paris</span>
+      <div class="payment-icons">
+        <span class="payment-icon">VISA</span><span class="payment-icon">MC</span><span class="payment-icon">CB</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/browse.js"></script>
+<script>
+// Connecter les boutons filtres rapides à browse.js
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Boutons type de vente dans la barre rapide
+  document.querySelectorAll('#typeFilters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const type = btn.dataset.type;
+      // Synchroniser avec les checkboxes de la sidebar
+      document.querySelectorAll('[name="type"]').forEach(cb => {
+        cb.checked = type ? cb.value === type : false;
+      });
+      if (typeof applyFilters === 'function') applyFilters();
+      else if (typeof loadArticles === 'function') loadArticles();
+    });
+  });
+
+  // Catégories dans la barre du hero browse
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      const radio = document.querySelector(`[name="categorie"][value="${cat}"]`);
+      if (radio) { radio.checked = true; }
+      if (typeof applyFilters === 'function') applyFilters();
+      else if (typeof loadArticles === 'function') loadArticles();
+    });
+  });
+
+  // URL params au chargement
+  const params = new URLSearchParams(window.location.search);
+  const typeParam = params.get('type');
+  if (typeParam) {
+    const btn = document.querySelector(`#typeFilters .filter-btn[data-type="${typeParam}"]`);
+    if (btn) btn.click();
+  }
+
+  // Toggle vue grille/liste
+  document.getElementById('viewGrid')?.addEventListener('click', function(){
+    this.style.background = 'var(--navy)'; this.style.color = '#fff';
+    document.getElementById('viewList').style.background = '';
+    document.getElementById('viewList').style.color = '';
+    document.getElementById('articlesGrid').style.gridTemplateColumns = '';
+  });
+  document.getElementById('viewList')?.addEventListener('click', function(){
+    this.style.background = 'var(--navy)'; this.style.color = '#fff';
+    document.getElementById('viewGrid').style.background = '';
+    document.getElementById('viewGrid').style.color = '';
+    document.getElementById('articlesGrid').style.gridTemplateColumns = '1fr';
+  });
+});
+</script>
+</body>
+</html>
