@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration — Omnes MarketPlace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .admin-header{background:linear-gradient(135deg,#0f1d35,#1b2a4a,#1e3a6e);padding:var(--space-10) 0;color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+    .admin-layout{display:grid;grid-template-columns:220px 1fr;gap:var(--space-6);align-items:start}
+    .admin-nav{background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden;position:sticky;top:calc(var(--header-h)+var(--space-4))}
+    .admin-nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5);font-size:var(--text-sm);font-weight:500;cursor:pointer;border-left:3px solid transparent;transition:var(--transition)}
+    .admin-nav-item:hover{background:var(--clr-light);color:var(--clr-primary)}
+    .admin-nav-item.active{background:var(--clr-light);color:var(--clr-primary);border-left-color:var(--clr-primary);font-weight:700}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+    .stat-card-adm{background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);padding:var(--space-6);text-align:center}
+    .stat-big{font-size:var(--text-4xl);font-weight:900;line-height:1}
+    .table-adm{width:100%;border-collapse:collapse;font-size:var(--text-sm)}
+    .table-adm th{background:var(--clr-light);padding:var(--space-3) var(--space-4);text-align:left;font-weight:600;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.05em;color:var(--clr-mid)}
+    .table-adm td{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--clr-border)}
+    .table-adm tr:last-child td{border-bottom:none}
+    .table-adm tr:hover td{background:var(--clr-light)}
+    @media(max-width:768px){.admin-layout{grid-template-columns:1fr}.admin-nav{display:flex;overflow-x:auto;position:static;margin-bottom:var(--space-5)}.admin-nav-item{white-space:nowrap;border-left:none;border-bottom:3px solid transparent}.admin-nav-item.active{border-bottom-color:var(--clr-primary)}}
+  </style>
+</head>
+<body>
+
+<header class="header" id="header" style="background:rgba(15,29,53,.97);border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="header-inner">
+    <a href="index.html" class="logo" style="color:#fff">
+      <div class="logo-icon"><i class="fas fa-store"></i></div>
+      <span style="color:rgba(255,255,255,.8)">Omnes</span><span style="color:var(--clr-accent)">Market</span>
+      <span style="margin-left:.5rem;font-size:.7rem;background:var(--clr-accent);color:#fff;padding:.2rem .5rem;border-radius:4px;font-weight:700;letter-spacing:.05em">ADMIN</span>
+    </a>
+    <div class="header-actions" style="margin-left:auto">
+      <div class="user-menu" id="userMenu" style="display:none">
+        <button class="user-avatar" id="userAvatarBtn" style="background:rgba(255,255,255,.15);color:#fff">AD</button>
+        <div class="dropdown-menu" id="userDropdown">
+          <div style="padding:.6rem .8rem .3rem;font-size:var(--text-xs);color:var(--clr-mid)">Administrateur</div>
+          <a href="admin-dashboard.html" class="dropdown-item"><i class="fas fa-shield-alt"></i> Tableau de bord</a>
+          <hr>
+          <button class="dropdown-item danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Connexion</a>
+    </div>
+  </div>
+</header>
+
+<div class="admin-header">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-8)">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--clr-primary);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <div>
+        <h1 style="font-size:var(--text-2xl)">Tableau de bord administrateur</h1>
+        <p style="opacity:.6;font-size:var(--text-sm)">Omnes MarketPlace · Gestion globale</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)" id="adminMetrics">
+      <div class="stat-card-adm"><div class="stat-big" style="color:var(--clr-teal)" id="mArticles">—</div><div style="font-size:var(--text-xs);color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:.5rem">Articles actifs</div></div>
+      <div class="stat-card-adm"><div class="stat-big" style="color:var(--clr-gold)" id="mVendeurs">—</div><div style="font-size:var(--text-xs);color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:.5rem">Vendeurs</div></div>
+      <div class="stat-card-adm"><div class="stat-big" style="color:var(--clr-accent)" id="mEncheres">—</div><div style="font-size:var(--text-xs);color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:.5rem">Enchères actives</div></div>
+      <div class="stat-card-adm"><div class="stat-big" style="color:var(--clr-primary)" id="mMembres">—</div><div style="font-size:var(--text-xs);color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:.5rem">Membres</div></div>
+    </div>
+  </div>
+</div>
+
+<main class="section-sm">
+  <div class="container">
+    <div class="admin-layout">
+
+      <nav class="admin-nav">
+        <div class="admin-nav-item active" data-panel="articles"><i class="fas fa-box"></i> Articles</div>
+        <div class="admin-nav-item" data-panel="users"><i class="fas fa-users"></i> Utilisateurs</div>
+        <div class="admin-nav-item" data-panel="encheres"><i class="fas fa-gavel"></i> Enchères</div>
+        <div class="admin-nav-item" data-panel="negociations"><i class="fas fa-comments-dollar"></i> Négociations</div>
+        <div class="admin-nav-item" data-panel="commandes"><i class="fas fa-receipt"></i> Commandes</div>
+      </nav>
+
+      <div>
+
+        <!-- ARTICLES -->
+        <div class="tab-panel active" id="panel-articles">
+          <div style="background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden">
+            <div style="padding:var(--space-6);border-bottom:1px solid var(--clr-border);display:flex;justify-content:space-between;align-items:center">
+              <h2 style="font-size:var(--text-xl)"><i class="fas fa-box text-primary"></i> Gestion des articles</h2>
+              <div style="display:flex;gap:.5rem">
+                <input type="search" id="artSearch" placeholder="Rechercher…" style="width:200px;padding:.4rem .75rem;font-size:var(--text-sm)">
+                <select id="artStatusFilter" style="font-size:var(--text-sm)">
+                  <option value="">Tous</option>
+                  <option value="disponible">Disponibles</option>
+                  <option value="vendu">Vendus</option>
+                </select>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table-adm" id="articlesTable">
+                <thead><tr><th>Article</th><th>Vendeur</th><th>Type</th><th>Prix</th><th>Statut</th><th>Actions</th></tr></thead>
+                <tbody id="articlesBody"><tr><td colspan="6" style="text-align:center;padding:3rem"><div class="spinner" style="margin:0 auto"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- USERS : onglets Vendeurs / Acheteurs avec bouton supprimer -->
+        <div class="tab-panel" id="panel-users">
+          <div style="background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden">
+            <div style="padding:var(--space-6);border-bottom:1px solid var(--clr-border)">
+              <h2 style="font-size:var(--text-xl)"><i class="fas fa-users text-primary"></i> Gestion des membres</h2>
+              <div style="display:flex;gap:.5rem;margin-top:var(--space-4)">
+                <button class="btn btn-primary btn-sm" id="tabVendeurs" onclick="showUserTab('vendeurs')">Vendeurs</button>
+                <button class="btn btn-ghost btn-sm" id="tabAcheteurs" onclick="showUserTab('acheteurs')">Acheteurs</button>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table-adm">
+                <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Inscription</th><th>Actions</th></tr></thead>
+                <tbody id="usersBody"><tr><td colspan="5" style="text-align:center;padding:3rem"><div class="spinner" style="margin:0 auto"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENCHÈRES -->
+        <div class="tab-panel" id="panel-encheres">
+          <div style="background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden">
+            <div style="padding:var(--space-6);border-bottom:1px solid var(--clr-border)">
+              <h2 style="font-size:var(--text-xl)"><i class="fas fa-gavel text-accent"></i> Gestion des enchères</h2>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table-adm">
+                <thead><tr><th>Article</th><th>Prix départ</th><th>Prix actuel</th><th>Offres</th><th>Fin</th><th>Statut</th><th>Actions</th></tr></thead>
+                <tbody id="encheresBody"><tr><td colspan="7" style="text-align:center;padding:3rem"><div class="spinner" style="margin:0 auto"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- NÉGOCIATIONS -->
+        <div class="tab-panel" id="panel-negociations">
+          <div style="background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden">
+            <div style="padding:var(--space-6);border-bottom:1px solid var(--clr-border)">
+              <h2 style="font-size:var(--text-xl)"><i class="fas fa-comments-dollar text-primary"></i> Négociations actives</h2>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table-adm">
+                <thead><tr><th>Article</th><th>Acheteur</th><th>Vendeur</th><th>Offre proposée</th><th>Tours</th><th>Statut</th><th>Mise à jour</th></tr></thead>
+                <tbody id="negoBody"><tr><td colspan="7" style="text-align:center;padding:3rem"><div class="spinner" style="margin:0 auto"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMMANDES -->
+        <div class="tab-panel" id="panel-commandes">
+          <div style="background:var(--clr-white);border:1px solid var(--clr-border);border-radius:var(--radius);overflow:hidden">
+            <div style="padding:var(--space-6);border-bottom:1px solid var(--clr-border)">
+              <h2 style="font-size:var(--text-xl)"><i class="fas fa-receipt text-teal"></i> Toutes les commandes</h2>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="table-adm">
+                <thead><tr><th>Référence</th><th>Acheteur</th><th>Montant</th><th>Date</th><th>Statut</th></tr></thead>
+                <tbody id="commandesBody"><tr><td colspan="5" style="text-align:center;padding:3rem"><div class="spinner" style="margin:0 auto"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/utils.js"></script>
+<script src="js/main.js"></script>
+<script>
+
+/* ── Navigation entre panels ── */
+function activatePanel(id) {
+  document.querySelectorAll('.admin-nav-item').forEach(function(n) {
+    n.classList.toggle('active', n.dataset.panel === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'panel-' + id);
+  });
+  if (id === 'articles')     loadAdminArticles();
+  if (id === 'users')        loadAdminUsers('vendeurs');
+  if (id === 'encheres')     loadAdminEncheres();
+  if (id === 'negociations') loadAdminNego();
+  if (id === 'commandes')    loadAdminCommandes();
+}
+document.querySelectorAll('.admin-nav-item[data-panel]').forEach(function(n) {
+  n.addEventListener('click', function() { activatePanel(n.dataset.panel); });
+});
+
+/* ── Stats ── */
+async function loadAdminStats() {
+  try {
+    var r = await apiGet(API.articles + '?stats=1');
+    if (!r.success) return;
+    var s = r.data;
+    function set(id, v) { var el = document.getElementById(id); if (el && v != null) el.textContent = Format.number(v); }
+    set('mArticles', s.total_articles);
+    set('mVendeurs',  s.total_vendeurs);
+    set('mEncheres',  s.encheres_actives);
+    set('mMembres',   s.total_membres);
+  } catch(e) {}
+}
+
+/* ── Articles ── */
+async function loadAdminArticles() {
+  var body = document.getElementById('articlesBody');
+  if (!body || body.dataset.loaded) return;
+  try {
+    var r = await apiGet(API.articles + '?page=1&sort=recent');
+    if (!r.success) throw new Error(r.message);
+    var articles = r.data.articles;
+    if (!articles.length) {
+      body.innerHTML = '<tr><td colspan="6" class="text-mid text-center">Aucun article.</td></tr>';
+      return;
+    }
+    body.innerHTML = articles.map(function(a) {
+      return '<tr>' +
+        '<td><a href="article.html?id=' + a.article_id + '" style="font-weight:600;color:var(--clr-primary)">' + a.titre + '</a></td>' +
+        '<td>' + (a.v_prenom||'') + ' ' + (a.v_nom||'') + '</td>' +
+        '<td>' +
+          (a.type_enchere ? '<span class="badge badge-enchere" style="font-size:.6rem">Enchère</span>' : '') +
+          (a.type_nego    ? '<span class="badge badge-nego" style="font-size:.6rem">Négo</span>' : '') +
+          (a.type_immediat? '<span class="badge badge-immediat" style="font-size:.6rem">Direct</span>' : '') +
+        '</td>' +
+        '<td>' + Format.price(a.prix_immediat || a.prix_depart_enchere || a.prix_depart_nego || 0) + '</td>' +
+        '<td><span class="badge badge-' + (a.statut === 'disponible' ? 'success' : a.statut === 'vendu' ? 'neutral' : 'warning') + '">' + a.statut + '</span></td>' +
+        '<td><button class="btn btn-ghost btn-sm" data-del="' + a.article_id + '" title="Supprimer"><i class="fas fa-trash" style="color:var(--clr-danger)"></i></button></td>' +
+        '</tr>';
+    }).join('');
+
+    body.querySelectorAll('[data-del]').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        if (!confirm('Supprimer cet article ?')) return;
+        try {
+          var res = await fetch(API.articles + '?id=' + btn.dataset.del, {
+            method: 'DELETE',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+          var json = await res.json();
+          if (json.success) { Toast.success('Article supprimé.'); btn.closest('tr').remove(); }
+          else throw new Error(json.message);
+        } catch(e) { Toast.error(e.message); }
+      });
+    });
+    body.dataset.loaded = '1';
+  } catch(e) { body.innerHTML = '<tr><td colspan="6" class="text-mid">' + e.message + '</td></tr>'; }
+}
+
+/* ── Utilisateurs (Vendeurs / Acheteurs) ── */
+var currentUserTab = 'vendeurs';
+
+function showUserTab(tab) {
+  currentUserTab = tab;
+  document.getElementById('tabVendeurs').className  = tab === 'vendeurs'  ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  document.getElementById('tabAcheteurs').className = tab === 'acheteurs' ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  document.getElementById('usersBody').dataset.loaded = '';
+  loadAdminUsers(tab);
+}
+
+async function loadAdminUsers(tab) {
+  var body = document.getElementById('usersBody');
+  if (!body) return;
+  body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem"><div class="spinner" style="margin:0 auto"></div></td></tr>';
+
+  try {
+    var url, role;
+    if (tab === 'vendeurs') {
+      url  = API.articles + '?vendeurs=1';
+      role = 'vendeur';
+    } else {
+      url  = API.auth + '?action=liste_acheteurs';
+      role = 'acheteur';
+    }
+
+    var r = await apiGet(url);
+    var users = [];
+
+    if (tab === 'vendeurs' && r.success && r.data && r.data.vendeurs) {
+      users = r.data.vendeurs;
+    } else if (tab === 'acheteurs' && r.success && r.data && r.data.acheteurs) {
+      users = r.data.acheteurs;
+    }
+
+    if (!users.length) {
+      body.innerHTML = '<tr><td colspan="5" class="text-mid text-center" style="padding:2rem">Aucun ' + role + '.</td></tr>';
+      return;
+    }
+
+    var idCol = tab === 'vendeurs' ? 'vendeur_id' : 'acheteur_id';
+
+    body.innerHTML = users.map(function(u) {
+      return '<tr>' +
+        '<td><strong>' + (u.prenom||'') + ' ' + (u.nom||'') + '</strong></td>' +
+        '<td class="text-mid">' + (u.email||'') + '</td>' +
+        '<td><span class="badge badge-' + (role === 'vendeur' ? 'enchere' : 'immediat') + '">' + role + '</span></td>' +
+        '<td class="text-mid text-sm">' + (u.date_inscription ? Format.date(u.date_inscription) : '—') + '</td>' +
+        '<td><button class="btn btn-ghost btn-sm" data-del-user="' + u[idCol] + '" data-role="' + role + '" title="Supprimer"><i class="fas fa-trash" style="color:var(--clr-danger)"></i></button></td>' +
+        '</tr>';
+    }).join('');
+
+    body.querySelectorAll('[data-del-user]').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        if (!confirm('Supprimer ce ' + btn.dataset.role + ' ? Cette action est irréversible.')) return;
+        try {
+          var res = await apiPost(API.auth, {
+            action:  'delete_user',
+            user_id: parseInt(btn.dataset.delUser),
+            role:    btn.dataset.role
+          });
+          if (res.success) {
+            Toast.success('Utilisateur supprimé.');
+            btn.closest('tr').remove();
+          } else {
+            throw new Error(res.message);
+          }
+        } catch(e) { Toast.error(e.message || 'Erreur suppression.'); }
+      });
+    });
+
+  } catch(e) {
+    body.innerHTML = '<tr><td colspan="5" class="text-mid text-center" style="padding:2rem">Erreur chargement.</td></tr>';
+  }
+}
+
+/* ── Enchères — correction : utilise enchere_id correct ── */
+async function loadAdminEncheres() {
+  var body = document.getElementById('encheresBody');
+  if (!body || body.dataset.loaded) return;
+  try {
+    var r = await apiGet(API.articles + '?type=enchere&page=1');
+    if (!r.success) throw new Error();
+    var articles = r.data.articles;
+    if (!articles || !articles.length) {
+      body.innerHTML = '<tr><td colspan="7" class="text-mid text-center">Aucune enchère.</td></tr>';
+      return;
+    }
+    body.innerHTML = articles.map(function(a) {
+      // enchere_id vient du JOIN avec la table Enchere dans articles.php
+      var eid = a.enchere_id || 0;
+      return '<tr>' +
+        '<td><a href="article.html?id=' + a.article_id + '" style="font-weight:600;color:var(--clr-primary)">' + a.titre + '</a></td>' +
+        '<td>' + Format.price(a.prix_depart_enchere || 0) + '</td>' +
+        '<td class="text-accent"><strong>' + Format.price(a.prix_actuel || a.prix_depart_enchere || 0) + '</strong></td>' +
+        '<td>' + (a.nb_offres || 0) + '</td>' +
+        '<td class="text-sm text-mid">' + (a.date_fin ? Format.date(a.date_fin) : '—') + '</td>' +
+        '<td><span class="badge badge-' + (a.statut === 'disponible' ? 'enchere' : 'neutral') + '">' + (a.statut === 'disponible' ? 'En cours' : 'Terminée') + '</span></td>' +
+        '<td>' +
+          (eid > 0
+            ? '<button class="btn btn-ghost btn-sm" onclick="cloturerEnchere(' + eid + ')" title="Clôturer"><i class="fas fa-flag-checkered text-mid"></i></button>'
+            : '<span class="text-mid text-sm">—</span>') +
+        '</td>' +
+        '</tr>';
+    }).join('');
+    body.dataset.loaded = '1';
+  } catch(e) { body.innerHTML = '<tr><td colspan="7" class="text-mid text-center">Impossible de charger.</td></tr>'; }
+}
+
+async function cloturerEnchere(id) {
+  if (!id || id <= 0) { Toast.error('ID enchère invalide.'); return; }
+  if (!confirm('Clôturer cette enchère maintenant ?')) return;
+  try {
+    var r = await apiPost(API.encheres, { action: 'cloture', enchere_id: id });
+    if (!r.success) throw new Error(r.message);
+    Toast.success('Enchère clôturée ! ' + (r.data && r.data.gagnant_id ? 'Gagnant notifié.' : 'Aucune offre.'));
+    document.getElementById('encheresBody').dataset.loaded = '';
+    loadAdminEncheres();
+  } catch(e) { Toast.error(e.message || 'Erreur clôture.'); }
+}
+window.cloturerEnchere = cloturerEnchere;
+
+/* ── Négociations — liste réelle depuis la BDD ── */
+async function loadAdminNego() {
+  var body = document.getElementById('negoBody');
+  if (!body || body.dataset.loaded) return;
+  try {
+    var r = await apiGet(API.negociation + '?action=admin_liste');
+    if (!r.success) throw new Error(r.message);
+    var negos = r.data.negociations;
+    if (!negos || !negos.length) {
+      body.innerHTML = '<tr><td colspan="7" class="text-mid text-center" style="padding:2rem">Aucune négociation active.</td></tr>';
+      return;
+    }
+    body.innerHTML = negos.map(function(n) {
+      var statutClass = n.statut === 'en_attente' ? 'warning' : n.statut === 'acceptee' ? 'success' : n.statut === 'refusee' ? 'danger' : 'neutral';
+      return '<tr>' +
+        '<td><a href="article.html?id=' + n.article_id + '" style="color:var(--clr-primary);font-weight:600">' + (n.titre||'—') + '</a></td>' +
+        '<td>' + (n.acheteur_prenom||'') + ' ' + (n.acheteur_nom||'') + '</td>' +
+        '<td>' + (n.vendeur_prenom||'') + ' ' + (n.vendeur_nom||'') + '</td>' +
+        '<td><strong>' + Format.price(n.prix_propose || 0) + '</strong></td>' +
+        '<td>' + (n.nb_tours || 0) + ' / 5</td>' +
+        '<td><span class="badge badge-' + statutClass + '">' + n.statut + '</span></td>' +
+        '<td class="text-mid text-sm">' + (n.updated_at ? Format.date(n.updated_at) : '—') + '</td>' +
+        '</tr>';
+    }).join('');
+    body.dataset.loaded = '1';
+  } catch(e) {
+    body.innerHTML = '<tr><td colspan="7" class="text-mid text-center" style="padding:2rem">Erreur chargement négociations.</td></tr>';
+  }
+}
+
+/* ── Commandes ── */
+async function loadAdminCommandes() {
+  var body = document.getElementById('commandesBody');
+  if (!body || body.dataset.loaded) return;
+  try {
+    var r = await apiGet(API.commande + '?action=admin_liste');
+    if (!r.success || !r.data || !r.data.commandes || !r.data.commandes.length) {
+      body.innerHTML = '<tr><td colspan="5" class="text-mid text-center">Aucune commande.</td></tr>';
+      return;
+    }
+    body.innerHTML = r.data.commandes.map(function(c) {
+      return '<tr>' +
+        '<td><strong class="text-primary">' + c.reference + '</strong></td>' +
+        '<td>' + (c.acheteur_prenom||'') + ' ' + (c.acheteur_nom||'') + '</td>' +
+        '<td><strong>' + Format.price(c.montant) + '</strong></td>' +
+        '<td class="text-mid text-sm">' + Format.date(c.date_commande) + '</td>' +
+        '<td><span class="badge badge-success">Confirmée</span></td>' +
+        '</tr>';
+    }).join('');
+    body.dataset.loaded = '1';
+  } catch(e) { body.innerHTML = '<tr><td colspan="5"><p class="text-mid text-center" style="padding:2rem">Erreur chargement.</p></td></tr>'; }
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() {
+  window.authReady.then(function(user) {
+    if (!user || user.role !== 'admin') { location.href = 'login.html'; return; }
+    var av = document.getElementById('userAvatarBtn');
+    if (av) av.textContent = Format.initials(user.name || 'AD');
+    loadAdminStats();
+    loadAdminArticles();
+  });
+});
+</script>
+</body>
+</html>
