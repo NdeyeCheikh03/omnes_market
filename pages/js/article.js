@@ -1,6 +1,4 @@
-/**
- * OMNES MARKETPLACE — article.js
- */
+
 'use strict';
 
 const artId = new URLSearchParams(location.search).get('id');
