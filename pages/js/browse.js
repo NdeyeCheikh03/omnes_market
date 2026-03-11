@@ -1,6 +1,4 @@
-/**
- * OMNES MARKETPLACE — browse.js
- */
+
 'use strict';
 
 let filters = { q:'', type:[], categorie:'', etat:'', vendeur_id:'', prix_min:'', prix_max:'', sort:'recent', page:1 };
