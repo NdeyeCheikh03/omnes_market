@@ -5,17 +5,17 @@ Application permettant aux étudiants d'acheter, vendre et enchérir sur des art
 
 ## Fonctionnalités
 
-- 🏠 Accueil et navigation des articles
-- 👤 Inscription, connexion et gestion du profil
-- 🛒 Panier et système de commandes
-- 🔨 Enchères en temps réel
-- 🤝 Négociation de prix
-- 🔔 Notifications utilisateurs
-- 🛠️ Dashboards admin et vendeur
+- Accueil et navigation des articles
+- Inscription, connexion et gestion du profil
+- Panier et système de commandes
+- Enchères en temps réel
+- Négociation de prix
+- Notifications utilisateurs
+- Dashboards admin et vendeur
 
 ## Stack technique
 
-- **Frontend** : HTML, CSS, JavaScript (Vanilla)
+- **Frontend** : HTML, CSS, JavaScript
 - **Backend** : PHP
 - **Base de données** : MySQL
 
