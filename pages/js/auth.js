@@ -1,7 +1,4 @@
-/**
- * OMNES MARKETPLACE — auth.js
- * login.html et register.html
- */
+
 'use strict';
 
 const DEMO = {
