@@ -1,8 +1,5 @@
 <?php
-/**
- * templates/footer.html.php
- * Pied de page HTML commun — injecté par PHP dans toutes les pages
- */
+
 ?>
 </main><!-- /page-main -->
 
