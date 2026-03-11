@@ -1,8 +1,4 @@
-/**
- * OMNES MARKETPLACE — main.js
- * Chargé sur TOUTES les pages (après utils.js)
- * Contient : API endpoints, apiPost/apiGet, auth, header, modals, buildCard
- */
+
 'use strict';
 
 /* ── BASE URL ── */
